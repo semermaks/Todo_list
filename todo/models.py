@@ -19,7 +19,9 @@ class Task(models.Model):
     tags = models.ManyToManyField(Tag, related_name="task")
 
     class Meta:
-        ordering = ['is_done', '-created_datetime']
+        ordering = ["is_done", "-created_datetime"]
 
     def __str__(self):
-        return f"Task: {self.content} ({self.created_datetime.strftime('%Y-%m-%d %H:%M')})"
+        return (
+            f"Task: {self.content} ({self.created_datetime.strftime('%Y-%m-%d %H:%M')})"
+        )

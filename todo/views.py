@@ -9,25 +9,21 @@ from todo.models import Task, Tag
 
 class TodoListView(generic.ListView):
     model = Task
-    template_name = 'todo/task_list.html'
-    context_object_name = 'tasks'
-    ordering = ['is_done', '-created_datetime']
+    template_name = "todo/task_list.html"
+    context_object_name = "tasks"
+    ordering = ["is_done", "-created_datetime"]
 
     def get_context_data(self, **kwargs) -> dict:
         context = super(TodoListView, self).get_context_data(**kwargs)
         content = self.request.GET.get("content", "")
-        context["search_form"] = TodoSearchForm(
-            {"content": content}
-        )
+        context["search_form"] = TodoSearchForm({"content": content})
         return context
 
     def get_queryset(self) -> QuerySet:
         queryset = Task.objects.all()
         form = TodoSearchForm(self.request.GET)
         if form.is_valid():
-            return queryset.filter(
-                content__icontains=form.cleaned_data["content"]
-            )
+            return queryset.filter(content__icontains=form.cleaned_data["content"])
         return super().get_queryset()
 
 
@@ -69,9 +65,7 @@ class TagListView(generic.ListView):
         queryset = Tag.objects.all()
         form = TagSearchForm(self.request.GET)
         if form.is_valid():
-            return queryset.filter(
-                name__icontains=form.cleaned_data["name"]
-            )
+            return queryset.filter(name__icontains=form.cleaned_data["name"])
         return super().get_queryset()
 
 

@@ -10,7 +10,7 @@ class TodoForm(forms.ModelForm):
         model = Task
         fields = ("content", "deadline_datetime", "tags")
         widgets = {
-            'deadline_datetime': forms.DateTimeInput(attrs={'type': 'datetime-local'}),
+            "deadline_datetime": forms.DateTimeInput(attrs={"type": "datetime-local"}),
         }
 
 
