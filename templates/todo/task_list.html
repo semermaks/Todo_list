@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% load crispy_forms_filters %}
+
+{% block content %}
+  <div class="d-flex justify-content-between align-items-center">
+    <h1 class="m-0 mb-3 text-center w-120">
+      Todo Service Home
+    </h1>
+    <div>
+      <a style="color: white;" href="{% url 'todo:task-create' %}" class="btn btn-primary">
+        Add task
+      </a>
+    </div>
+  </div>
+  <br>
+  <form method="get" action="" class="form-inline" style="margin-bottom: 10px;">
+    {{ search_form|crispy }}
+    <input type="Submit" value="🔍" class="btn btn-secondary" style="margin-left:10px;">
+  </form>
+  {% if tasks %}
+    {% for todo in tasks %}
+      <div>
+        <h3>{{ todo.content }}</h3>
+        {% if todo.is_done %}
+          <a style="color: green">Done</a>
+          <a href="{% url 'todo:uncomplete-task' pk=todo.id %}" class="btn btn-success btn-sm ml-2" style="background-color: gray">Undo</a>
+        {% else %}
+          <a style="color: red">Not done</a>
+          <a href="{% url 'todo:complete-task' pk=todo.id %}" class="btn btn-success btn-sm ml-2" >Complete</a>
+        {% endif %}
+      </div>
+      <br>
+      <div>
+        <a>Create at: {{ todo.created_datetime }}</a>
+        {% if todo.deadline_datetime %}
+          <a style="color: lightcoral; padding: 10px">Deadline: {{ todo.deadline_datetime }}</a>
+        {% endif %}
+      </div>
+      <h6>
+      Tags: 
+      {% for tag in todo.tags.all%}
+        <a>{{ tag.name }}</a>
+      {% endfor %}
+      </h6>
+      <div>
+        <a style="color: blue; padding: 10px" href="{% url 'todo:task-update' pk=todo.id %}">
+          Update
+        </a>
+        <a style="color: blue" href="{% url 'todo:task-delete' pk=todo.id %}">
+          Delete
+        </a>
+      </div>
+      <hr>
+    {% endfor %}
+  {% else %}
+    <p>There are no tasks in the service.</p>
+  {% endif %}
+{% endblock %}
